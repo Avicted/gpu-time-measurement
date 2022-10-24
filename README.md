@@ -5,7 +5,7 @@ takes for the kernel to start up, execute and end.
 
 ```bash
 # Install the needed packages
-sudo pacman -S rocm-cmake rocm-core rocm-device-libs rocm-llvm hip-runtime-amd
+sudo yay -S rocm-cmake rocm-core rocm-device-libs rocm-llvm hip-runtime-amd
 
 # Add the ROCm compiler and scripts to the user path
 # Typically inside of ~/.bashrc or ~/.zshrc
