@@ -5,13 +5,12 @@ takes for the kernel to start up, execute and end.
 
 ```bash
 # Install the needed packages
-sudo yay -S rocm-cmake rocm-core rocm-device-libs rocm-llvm hip-runtime-amd
+sudo pacman -S opencl-amd opencl-amd-dev
 
-# Add the ROCm compiler and scripts to the user path
+# Add the ROCm compiler and scripts and executable to the user path
 # Typically inside of ~/.bashrc or ~/.zshrc
 # source the config file (source ~/.zshrc) or start a new terminal session after
-# the addition of the hip/bin path
-export PATH="/opt/rocm/hip/bin:$PATH"
+export PATH="/opt/rocm-5.5.0/bin:$PATH" # <--- change version to the installed
 ```
 
 ## Run
@@ -25,7 +24,6 @@ make
 ```bash
 Cleaning
 rm -r build 2> /dev/null || true
-rm -r code/*.o 2> /dev/null || true
 rm -r code/*.cu 2> /dev/null || true
 
 Creating directories
@@ -41,7 +39,7 @@ Running the executable
 ./build/gpu_signal_processing.out
         Starting the program
    Found 1 CUDA devices
-      Device AMD Radeon RX 6900 XT                  device 0
+         Device AMD Radeon RX 6900 XT                    = device 0
          compute capability           =         10.3
          totalGlobalMemory            =        17.16 GB
          l2CacheSize                  =     4194304 B
@@ -54,17 +52,17 @@ Running the executable
          maxThreadsPerBlock           =        1024
          maxGridSize                  =    2147483647 x 2147483647 x 2147483647
          maxThreadsDim                =    1024 x 1024 x 1024
-         concurrentKernels            =       Using CUDA device 0
+   Using CUDA device 0
 
 ====================================================================
-blocksInGrid:   {1, 1, 1} blocks.
-threadsInBlock: 1024 threads.
+blocksInGrid:	{1, 1, 1} blocks.
+threadsInBlock:	1024 threads.
 number of threads: 1024
-        Total memory allocated = 0.0 MB
-        The program took 172707 microseconds
-        The program took 172 milliseconds
-        The program took 0.172707 seconds
+        The program took 164043 microseconds
+        The program took 164 milliseconds
+        The program took 0.164043 seconds
         To execute the GPU kernel
 
 The program has been built and runned successfully!
+
 ```

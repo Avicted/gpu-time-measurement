@@ -4,10 +4,6 @@
 # print arbitrary variables with $ make print-<name>
 print-%  : ; @echo $* = $($*)
 
-
-# define the C++ compiler to use
-# CC = hipcc
-
 # define any compile-time flags
 CPPFLAGS = -O3 # -g -Wall -Wextra -Wpedantic -Wno-unused-parameter
 # CPPFLAGS += -I/usr/include

@@ -1,7 +1,8 @@
+#include "hip/hip_runtime.h"
 // Inspiration and code snippets borrowed from my lecturer Doctor Jan Westerholm at AAU.
 // Victor Anderssén 2022 Fall
 
-#include <cuda.h>
+#include <hip/hip_runtime.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -18,11 +19,11 @@
     {                                         \
         gpuAssert((ans), __FILE__, __LINE__); \
     }
-inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort = true)
+inline void gpuAssert(hipError_t code, const char *file, int line, bool abort = true)
 {
-    if (code != cudaSuccess)
+    if (code != hipSuccess)
     {
-        fprintf(stderr, "GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
+        fprintf(stderr, "GPUassert: %s %s %d\n", hipGetErrorString(code), file, line);
         if (abort)
             exit(code);
     }
@@ -43,7 +44,7 @@ internal int
 get_device()
 {
     int deviceCount;
-    cudaGetDeviceCount(&deviceCount);
+    hipGetDeviceCount(&deviceCount);
     printf("   Found %d CUDA devices\n", deviceCount);
 
     if (deviceCount < 0 || deviceCount > 128)
@@ -54,8 +55,8 @@ get_device()
     int device;
     for (device = 0; device < deviceCount; ++device)
     {
-        cudaDeviceProp deviceProp;
-        cudaGetDeviceProperties(&deviceProp, device);
+        hipDeviceProp_t deviceProp;
+        hipGetDeviceProperties(&deviceProp, device);
         printf("         Device %s                    = device %d\n", deviceProp.name, device);
         printf("         compute capability           =         %d.%d\n", deviceProp.major, deviceProp.minor);
         printf("         totalGlobalMemory            =        %.2lf GB\n", deviceProp.totalGlobalMem / 1000000000.0);
@@ -73,8 +74,8 @@ get_device()
                deviceProp.maxThreadsDim[0], deviceProp.maxThreadsDim[1], deviceProp.maxThreadsDim[2]);
     }
 
-    cudaSetDevice(0);
-    cudaGetDevice(&device);
+    hipSetDevice(0);
+    hipGetDevice(&device);
 
     if (device != 0)
     {
@@ -116,8 +117,8 @@ int main(int argc, char *argv[])
     // Call the GPU kernel(s)
     measure_kernel_memory_transfer_overhead_kernel<<<blocksInGrid, threadsInBlock>>>();
 
-    gpuErrchk(cudaGetLastError());
-    gpuErrchk(cudaDeviceSynchronize());
+    gpuErrchk(hipGetLastError());
+    gpuErrchk(hipDeviceSynchronize());
     // Main body end
 
     gettimeofday(&et, &_tzone);
